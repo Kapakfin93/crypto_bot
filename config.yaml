@@ -1,0 +1,75 @@
+# ==============================================================================
+# CONFIGURATION FILE FOR MTF TRADING BOT
+# ==============================================================================
+# All strategy parameters are defined here.
+# This allows for easy tuning without changing the core Python code.
+
+# -- Exchange & Data Settings --
+exchange:
+  id: 'binance' # Exchange ID from CCXT (e.g., binance, bybit, kucoin)
+  default_symbol: 'BTC/USDT'
+  # Set to 'future' for perpetual contracts, 'spot' for spot market
+  market_type: 'future' 
+  rate_limit_aware: true # Enable CCXT's built-in rate limiter
+
+# -- Timeframe (TF) Settings --
+# Do not change these unless you are modifying the core MTF logic
+timeframes:
+  bias: '8h'
+  confirmation: '4h'
+  pattern: '1h'
+  entry: '15m'
+
+# -- Strategy Parameters --
+strategy:
+  # Minimum confluence score (out of 10) required to send a signal
+  min_confluence_score: 7.0 
+  # Cooldown period in hours between signals for the same pair to avoid spam
+  signal_cooldown_hours: 3 
+  # Minimum Risk-to-Reward ratio required for a valid signal
+  min_rr_ratio: 1.5 
+  # Lookback period for fetching historical data
+  data_lookback_bars: 300 
+
+# -- Indicator Parameters --
+indicators:
+  macd:
+    fast: 3
+    slow: 10
+    signal: 16
+  stoch_rsi:
+    length: 5
+    smooth_k: 3
+    smooth_d: 3
+    overbought: 80
+    oversold: 20
+  stochastic:
+    k: 5
+    smooth_k: 3
+    d: 3
+  smma:
+    length: 28
+  ema_slow:
+    length: 200
+  ema_fast:
+    length: 50
+  ema_trend_short:
+    length: 13
+  ema_trend_long:
+    length: 21
+  atr:
+    length: 14 # Used for SL buffer calculation
+
+# -- Risk Management --
+risk:
+  # ATR multiplier for Stop Loss buffer. SL = swing_level +/- (atr_buffer_multiplier * ATR)
+  atr_buffer_multiplier: 0.8 
+
+# -- Telegram Notifier Settings --
+telegram:
+  enabled: true
+  timezone: 'Asia/Jakarta' # For message timestamps
+
+# -- Operational Settings --
+operation:
+  run_interval_minutes: 15 # How often the main loop runs (should match entry TF)
